@@ -6,12 +6,14 @@ $$
 p(i) \propto \exp(-\beta i)
 $$
 
+The script uses reduced units with $k_B = 1$, so $T = 1 / \beta$ and the entropy is reported in nats.
+
 ## What this script does
 
 1. Solves for $\beta$ from a target mean $E$ (`beta_from_mean`).
 2. Computes entropy $S = -\sum_i p_i \log p_i$ from $\beta$ (`entropy_from_beta`).
 3. Builds and plots the main relationships:
-   - $\beta(E)$ and $T(E) = \frac{1}{\beta}$
+   - $\beta(E)$ and $T(E) = \frac{1}{\beta}$ on separate axes
    - $S(\beta)$
    - $S(T)$ with finite-temperature filtering
    - $S(E)$
@@ -29,9 +31,11 @@ $$
 
 - Reduced excessive plotting by removing per-call plotting inside entropy calculations.
 - Consolidated output into a compact 2x2 figure panel.
-- Handled `Inf`/invalid cases in temperature-based plotting by filtering non-finite or near-zero $T$.
+- Fixed the root-finding so `beta_from_mean()` works for means arbitrarily close to the boundary states.
+- Rewrote the Boltzmann weights with a numerically stable normalization to avoid overflow/underflow.
+- Handled the pole at $\beta = 0$ by omitting the singular temperature value and plotting $\beta(E)$ and $T(E)$ on separate axes.
 - Added clearer plot titles, grid styling, and a legend.
-- Added titled tabular outputs for readability.
+- Added titled tabular outputs and internal consistency checks for readability and validation.
 
 ## Run
 
